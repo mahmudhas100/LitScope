@@ -3,6 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { auth } from '../../firebase/config'
 import { useUser } from '../../hooks/useUser'
 import LoadingSpinner from './LoadingSpinner'
+import { 
+  HomeIcon, 
+  BookOpenIcon, 
+  ArrowRightOnRectangleIcon, 
+  MagnifyingGlassIcon, 
+  UserCircleIcon, 
+  FireIcon,
+  Bars3Icon
+} from '@heroicons/react/24/outline'
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -65,18 +74,16 @@ const Sidebar = () => {
       
       <div className="fixed top-0 left-0 h-screen z-50">
         <button
-          className="p-4 hover:bg-gray-100 rounded-lg m-2"
+          className="p-4 hover:bg-stone-100 rounded-lg m-2 text-ink"
           onClick={() => setIsOpen(!isOpen)}
           onMouseEnter={() => window.innerWidth >= 768 && setIsOpen(true)}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Bars3Icon className="w-6 h-6" />
         </button>
 
         <div
           ref={sidebarRef}
-          className={`absolute left-0 top-0 h-screen w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out 
+          className={`absolute left-0 top-0 h-screen w-72 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out border-r border-stone-100
             ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           `}
           onMouseEnter={() => window.innerWidth >= 768 && setIsOpen(true)}
@@ -86,64 +93,70 @@ const Sidebar = () => {
             {isLoading ? (
               <LoadingSpinner />
             ) : (
-              <div className="mb-8 p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl text-white">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-blue-500">
-                    {user?.displayName?.[0]?.toUpperCase() || '👤'}
+              <div className="mb-8 p-6 bg-primary-600 rounded-2xl text-white shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white opacity-10 rounded-full blur-xl"></div>
+                <div className="flex items-center gap-4 mb-4 relative z-10">
+                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-xl font-bold text-white border border-white/30">
+                    {user?.displayName?.[0]?.toUpperCase() || <UserCircleIcon className="w-8 h-8" />}
                   </div>
                   <div className="user-info">
                     {user?.displayName && (
-                      <h2 className="font-bold text-lg">{user.displayName}</h2>
+                      <h2 className="font-bold text-lg font-serif tracking-wide">{user.displayName}</h2>
                     )}
                     {userData?.username && (
-                      <p className="text-sm opacity-75">@{userData.username}</p>
+                      <p className="text-sm opacity-80">@{userData.username}</p>
                     )}
-                    <div className="flex items-center gap-2 mt-2 text-white/80">
-                      <span className="text-lg">🔥</span>
-                      <span className="text-sm font-bold">{userData?.streak || 0}</span>
+                    <div className="flex items-center gap-2 mt-2 text-white/90">
+                      <FireIcon className="w-5 h-5 text-orange-300" />
+                      <span className="text-sm font-bold">{userData?.streak || 0} day streak</span>
                     </div>
                   </div>
                 </div>
                 <Link 
                   to="/profile" 
-                  className="block w-full text-center bg-white/20 hover:bg-white/30 py-2 rounded-lg transition duration-200"
+                  className="block w-full text-center bg-white/20 hover:bg-white/30 py-2 rounded-lg transition duration-200 text-sm font-medium backdrop-blur-sm"
                 >
                   View Profile
                 </Link>
               </div>
             )}
 
-            <form onSubmit={searchBooks} className="mt-4 mb-4 border-b pb-4">
+            <form onSubmit={searchBooks} className="mt-2 mb-6 relative">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search books..."
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
               />
+              <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" />
             </form>
 
             {isSearching ? (
               <LoadingSpinner />
             ) : (
-              <div className="overflow-y-auto flex-grow">
+              <div className="overflow-y-auto flex-grow pr-2 scrollbar-thin scrollbar-thumb-stone-200">
                 {searchResults.map((book) => (
                   <Link 
                     to={`/book/${book.id}`}
                     key={book.id} 
-                    className="block p-2 hover:bg-gray-50 rounded-lg mb-2 transition duration-200"
+                    className="block p-3 hover:bg-stone-50 rounded-xl mb-3 transition duration-200 border border-transparent hover:border-stone-100 group"
                   >
-                    <div className="flex items-center gap-2">
-                      {book.volumeInfo.imageLinks?.thumbnail && (
+                    <div className="flex items-center gap-3">
+                      {book.volumeInfo.imageLinks?.thumbnail ? (
                         <img 
                           src={book.volumeInfo.imageLinks.thumbnail} 
                           alt={book.volumeInfo.title}
-                          className="w-12 h-16 object-cover rounded"
+                          className="w-12 h-16 object-cover rounded shadow-sm group-hover:shadow-md transition-all"
                         />
+                      ) : (
+                        <div className="w-12 h-16 bg-stone-200 rounded flex items-center justify-center text-stone-400">
+                          <BookOpenIcon className="w-6 h-6" />
+                        </div>
                       )}
                       <div>
-                        <h3 className="font-medium text-sm">{book.volumeInfo.title}</h3>
-                        <p className="text-xs text-gray-600">
+                        <h3 className="font-bold text-sm text-ink line-clamp-1 font-serif">{book.volumeInfo.title}</h3>
+                        <p className="text-xs text-ink/60 line-clamp-1">
                           {book.volumeInfo.authors?.join(', ')}
                         </p>
                       </div>
@@ -153,22 +166,22 @@ const Sidebar = () => {
               </div>
             )}
 
-            <nav className="space-y-4">
-              <Link to="/" className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition duration-200">
-                <span className="text-xl">🏠</span>
+            <nav className="space-y-2 mt-4">
+              <Link to="/" className="flex items-center gap-3 p-3 text-ink/80 hover:bg-primary-50 hover:text-primary-700 rounded-xl transition duration-200 font-medium">
+                <HomeIcon className="w-6 h-6" />
                 Home
               </Link>
-              <Link to="/my-clubs" className="flex items-center gap-3 p-3 text-gray-700 hover:bg-gray-50 rounded-lg transition duration-200">
-                <span className="text-xl">📚</span>
+              <Link to="/my-clubs" className="flex items-center gap-3 p-3 text-ink/80 hover:bg-primary-50 hover:text-primary-700 rounded-xl transition duration-200 font-medium">
+                <BookOpenIcon className="w-6 h-6" />
                 My Clubs
               </Link>
             </nav>
 
             <button 
               onClick={handleLogout}
-              className="mt-auto flex items-center gap-3 p-3 text-red-600 hover:bg-red-50 rounded-lg transition duration-200"
+              className="mt-auto flex items-center gap-3 p-3 text-red-600 hover:bg-red-50 rounded-xl transition duration-200 font-medium"
             >
-              <span className="text-xl">🚪</span>
+              <ArrowRightOnRectangleIcon className="w-6 h-6" />
               Logout
             </button>
           </div>

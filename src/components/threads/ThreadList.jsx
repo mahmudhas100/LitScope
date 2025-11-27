@@ -46,19 +46,19 @@ const ThreadList = ({ threads }) => {
       {threads.map((thread) => (
         <div
           key={thread.id}
-          className="bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition duration-200"
+          className="bg-paper rounded-xl p-6 hover:bg-stone-50 transition duration-200 border border-stone-100"
         >
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-bold shadow-sm">
                 {thread.authorName[0].toUpperCase()}
               </div>
               <div>
-                <h3 className="font-semibold text-gray-800">
+                <h3 className="font-semibold text-ink font-serif">
                   {thread.authorName}
                 </h3>
                 
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-ink/60">
                   {new Date(thread.createdAt).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -79,7 +79,7 @@ const ThreadList = ({ threads }) => {
             />
           </div>
 
-          <p className="text-gray-700 mb-4 text-lg">{thread.content}</p>
+          <p className="text-ink/80 mb-4 text-lg leading-relaxed">{thread.content}</p>
 
           <div className="flex gap-6">
             <button
@@ -87,7 +87,7 @@ const ThreadList = ({ threads }) => {
               className={`flex items-center gap-2 transition duration-200 ${
                 thread.likedBy?.includes(auth.currentUser?.uid)
                   ? "text-red-500"
-                  : "text-gray-500 hover:text-red-500"
+                  : "text-ink/40 hover:text-red-500"
               }`}
             >
               <span className="text-xl">

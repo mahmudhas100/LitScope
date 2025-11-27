@@ -48,7 +48,7 @@ const Comment = ({ threadId, comments }) => {
     <div className="mt-4">
       <button
         onClick={() => setShowComments(!showComments)}
-        className="text-gray-500 hover:text-blue-600 transition duration-200"
+        className="text-ink/60 hover:text-primary-600 transition duration-200 font-medium"
       >
         💬 {comments?.length || 0} Comments
       </button>
@@ -59,13 +59,13 @@ const Comment = ({ threadId, comments }) => {
             <div key={index} className="bg-white rounded-lg p-4 shadow-sm">
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-sm">
                     {comment.authorName[0].toUpperCase()}
                   </div>
                   <div>
-                    <span className="font-medium">{comment.authorName}</span>
+                    <span className="font-medium text-ink">{comment.authorName}</span>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-ink/60">
                       {new Date(comment.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -91,7 +91,7 @@ const Comment = ({ threadId, comments }) => {
                   }}
                 />
               </div>
-              <p className="mt-2 text-gray-700">{comment.content}</p>
+              <p className="mt-2 text-ink/80">{comment.content}</p>
             </div>
           ))}
 
@@ -101,12 +101,12 @@ const Comment = ({ threadId, comments }) => {
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Add a comment..."
-              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-stone-50"
               required
             />
             <button
               type="submit"
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200"
+              className="mt-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition duration-200 font-medium shadow-sm"
             >
               Post Comment
             </button>

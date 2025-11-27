@@ -34,7 +34,7 @@ const BookPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-8">
-      <div className="bg-white rounded-xl shadow-lg p-8">
+      <div className="bg-white rounded-xl shadow-sm border border-stone-100 p-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Book Cover Section */}
           <div className="flex-shrink-0">
@@ -48,7 +48,7 @@ const BookPage = () => {
                 href={volumeInfo.previewLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                className="mt-4 block text-center bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 transition shadow-sm"
               >
                 Preview Book
               </a>
@@ -57,40 +57,40 @@ const BookPage = () => {
 
           {/* Book Details Section */}
           <div className="flex-grow">
-            <h1 className="text-3xl font-bold mb-2">{volumeInfo.title}</h1>
+            <h1 className="text-3xl font-bold mb-2 font-serif text-ink">{volumeInfo.title}</h1>
             {volumeInfo.subtitle && (
-              <h2 className="text-xl text-gray-600 mb-2">{volumeInfo.subtitle}</h2>
+              <h2 className="text-xl text-ink/60 mb-2">{volumeInfo.subtitle}</h2>
             )}
-            <p className="text-lg text-gray-700 mb-4">
+            <p className="text-lg text-ink/80 mb-4">
               By {volumeInfo.authors?.join(', ')}
             </p>
 
             {/* Book Metadata */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <p className="text-sm text-gray-600">Published</p>
+                <p className="text-sm text-ink/60">Published</p>
                 <p className="font-medium">{volumeInfo.publishedDate}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Publisher</p>
+                <p className="text-sm text-ink/60">Publisher</p>
                 <p className="font-medium">{volumeInfo.publisher}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Pages</p>
+                <p className="text-sm text-ink/60">Pages</p>
                 <p className="font-medium">{volumeInfo.pageCount}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Categories</p>
+                <p className="text-sm text-ink/60">Categories</p>
                 <p className="font-medium">{volumeInfo.categories?.join(', ')}</p>
               </div>
             </div>
 
             {/* Description */}
             <div className="prose max-w-none">
-              <h3 className="text-xl font-semibold mb-2">About this book</h3>
+              <h3 className="text-xl font-semibold mb-2 font-serif text-ink">About this book</h3>
               <div 
                 dangerouslySetInnerHTML={{ __html: volumeInfo.description }}
-                className="text-gray-700"
+                className="text-ink/80 leading-relaxed"
               />
             </div>
 
@@ -100,13 +100,13 @@ const BookPage = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-yellow-400">★</span>
                   <span>{volumeInfo.averageRating} / 5</span>
-                  <span className="text-gray-500">
+                  <span className="text-ink/40">
                     ({volumeInfo.ratingsCount} ratings)
                   </span>
                 </div>
               )}
               {volumeInfo.industryIdentifiers?.map((identifier) => (
-                <p key={identifier.identifier} className="text-sm text-gray-600">
+                <p key={identifier.identifier} className="text-sm text-ink/60">
                   {identifier.type.replace('_', ' ')}: {identifier.identifier}
                 </p>
               ))}

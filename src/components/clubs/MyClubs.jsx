@@ -57,10 +57,10 @@ const MyClubs = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">My Clubs</h1>
+        <h1 className="text-3xl font-bold text-ink font-serif">My Clubs</h1>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="px-6 py-2.5 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition duration-200 font-medium shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
         >
           Create Club
         </button>
@@ -72,13 +72,13 @@ const MyClubs = () => {
       />
 
       {clubs.length === 0 ? (
-        <div className="text-center py-12">
-          <h2 className="text-xl text-gray-600 mb-4">
+        <div className="text-center py-12 bg-white rounded-xl border border-stone-100 shadow-sm">
+          <h2 className="text-xl text-ink/60 mb-4 font-serif">
             You haven't joined any clubs yet
           </h2>
           <Link
             to="/clubs"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="inline-block px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition duration-200 font-medium shadow-sm"
           >
             Discover Clubs
           </Link>
@@ -89,18 +89,18 @@ const MyClubs = () => {
             <Link
               to={`/clubs/${club.id}`}
               key={club.id}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="bg-white rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition-all duration-300 hover:-translate-y-1 block h-full"
             >
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">
+              <div className="p-6 flex flex-col h-full">
+                <h2 className="text-xl font-bold text-ink mb-2 font-serif line-clamp-1">
                   {club.name}
                 </h2>
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <p className="text-ink/60 mb-6 line-clamp-2 text-sm flex-grow">
                   {club.description}
                 </p>
-                <div className="flex justify-between items-center text-sm text-gray-500">
-                  <span>👥 {club.memberCount || 0} members</span>
-                  <span>💬 {club.discussionCount || 0} discussions</span>
+                <div className="flex justify-between items-center text-sm text-ink/50 pt-4 border-t border-stone-100">
+                  <span className="flex items-center gap-1">👥 {club.memberCount || 0} members</span>
+                  <span className="flex items-center gap-1">💬 {club.discussionCount || 0} discussions</span>
                 </div>
               </div>
             </Link>
