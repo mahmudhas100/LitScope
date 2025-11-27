@@ -25,3 +25,7 @@ dist-ssr
 
 .env
 .env.local
+
+# Security
+SECURITY.md
+firestore.rules
