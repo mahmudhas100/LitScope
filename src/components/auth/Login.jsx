@@ -11,6 +11,7 @@ import { useNavigate, Link } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,7 +30,7 @@ const Login = () => {
       }
       navigate("/");
     } catch (error) {
-      alert("Invalid email or password");
+      setError("Invalid email or password");
     }
   };
 
@@ -62,6 +63,12 @@ const Login = () => {
             </h2>
             <p className="text-gray-600">Sign in to continue to LitScope</p>
           </div>
+
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">{error}</span>
+            </div>
+          )}
 
           <div className="mt-8 space-y-6">
             <div>

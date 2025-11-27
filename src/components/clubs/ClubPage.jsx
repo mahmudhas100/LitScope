@@ -176,7 +176,7 @@ const ClubPage = () => {
   if (!user || loading) return <LoadingSpinner />
 
   return (
-    <div className="relative max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6">
       {isCreator && (
         <div className="absolute top-7 right-7">
           <button 
@@ -310,7 +310,13 @@ const ClubPage = () => {
 
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-6">Recent Discussions</h2>
-        <ThreadList threads={threads} />
+        {threads.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            <p>No discussions yet. Be the first to start a conversation!</p>
+          </div>
+        ) : (
+          <ThreadList threads={threads} />
+        )}
       </div>
 
       {isEditing && (

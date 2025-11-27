@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import LoadingSpinner from "../shared/LoadingSpinner";
+import CreateClubModal from './CreateClubModal';
 
 const MyClubs = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const user = auth.currentUser;
 
@@ -53,8 +55,21 @@ const MyClubs = () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">My Book Clubs</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">My Clubs</h1>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Create Club
+        </button>
+      </div>
+      
+      <CreateClubModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
       {clubs.length === 0 ? (
         <div className="text-center py-12">

@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase/config";
+import CreateClubModal from "../components/clubs/CreateClubModal";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreateClub = () => {
     const user = auth.currentUser;
     if (user) {
-      navigate("/create-club");
+      setIsModalOpen(true);
     } else {
       navigate("/login");
     }
@@ -106,6 +109,10 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <CreateClubModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
       <footer className="bg-neutral-100 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

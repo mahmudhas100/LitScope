@@ -3,12 +3,14 @@ import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { Link } from 'react-router-dom'
 import LoadingSpinner from '../shared/LoadingSpinner'
+import CreateClubModal from './CreateClubModal'
 
 const ClubList = () => {
   const [clubs, setClubs] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filter, setFilter] = useState('all')
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const fetchClubsAndThreads = async () => {
@@ -51,6 +53,20 @@ const ClubList = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Book Clubs</h2>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        >
+          Create Club
+        </button>
+      </div>
+
+      <CreateClubModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">
           Discover Book Clubs

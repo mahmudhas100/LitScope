@@ -12,7 +12,7 @@ import Profile from './components/profile/Profile.jsx';
 import BookPage from './components/books/BookPage.jsx';
 import PrivateRoute from './components/shared/PrivateRoute.jsx';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
@@ -26,9 +26,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
               <Route path="/my-clubs" element={<PrivateRoute><MyClubs /></PrivateRoute>} />
-              <Route path="/create-club" element={<CreateClub />} />
+              <Route path="/create-club" element={<PrivateRoute><CreateClub /></PrivateRoute>} />
               <Route path="/clubs" element={<ClubsList />} />
               <Route path="/clubs/:clubId" element={<ClubPage />} />
+              <Route path="/club/:clubId" element={<ClubPage />} />
               <Route path="/book/:bookId" element={<BookPage />} />
             </Routes>
           </div>
