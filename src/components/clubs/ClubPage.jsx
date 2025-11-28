@@ -182,6 +182,40 @@ const ClubPage = () => {
     setIsPending(false)
   }
 
+  const handleLeaveClub = async () => {
+    if (!confirm('Are you sure you want to leave this club?')) return
+    try {
+      const clubRef = doc(db, 'clubs', clubId)
+      await updateDoc(clubRef, {
+        members: arrayRemove(user.uid),
+        memberCount: increment(-1)
+      })
+      alert('You have left the club')
+      navigate('/clubs')
+    } catch (error) {
+      console.error('Error leaving club:', error)
+      alert('Failed to leave club')
+    }
+  }
+
+  const handleRemoveMember = async (memberId) => {
+    if (memberId === user.uid) {
+      alert('You cannot remove yourself. Use the Leave Club button instead.')
+      return
+    }
+    if (!confirm('Are you sure you want to remove this member?')) return
+    try {
+      const clubRef = doc(db, 'clubs', clubId)
+      await updateDoc(clubRef, {
+        members: arrayRemove(memberId),
+        memberCount: increment(-1)
+      })
+    } catch (error) {
+      console.error('Error removing member:', error)
+      alert('Failed to remove member')
+    }
+  }
+
   const handleRequestResponse = async (requestUserId, accept) => {
     const clubRef = doc(db, 'clubs', clubId)
     const clubDoc = await getDoc(clubRef)
@@ -324,7 +358,7 @@ const ClubPage = () => {
             }`}>
             {club?.isPublic ? '🌐 Public Club' : '🔒 Private Club'}
           </span>
-          {!isMember && (
+          {!isMember ? (
             isPending ? (
               <button
                 onClick={handleCancelRequest}
@@ -340,6 +374,13 @@ const ClubPage = () => {
                 Request to Join
               </button>
             )
+          ) : !isCreator && (
+            <button
+              onClick={handleLeaveClub}
+              className="ml-auto px-6 py-2 bg-red-600/80 hover:bg-red-700 text-white rounded-lg transition duration-200 font-medium"
+            >
+              Leave Club
+            </button>
           )}
         </div>
       </div>
@@ -465,10 +506,17 @@ const ClubPage = () => {
                     {/* Change 9: Member Names in Modal */}
                     <p className="font-semibold text-ink">{member.name}</p>
                   </div>
-                  {member.isCreator && (
+                  {member.isCreator ? (
                     <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full font-semibold">
                       Creator
                     </span>
+                  ) : isCreator && (
+                    <button
+                      onClick={() => handleRemoveMember(member.id)}
+                      className="px-3 py-1 bg-red-50 hover:bg-red-100 text-red-600 text-xs rounded-lg font-medium transition"
+                    >
+                      Remove
+                    </button>
                   )}
                 </div>
               ))}

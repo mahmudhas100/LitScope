@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { collection, query, where, orderBy, onSnapshot, updateDoc, doc, deleteDoc } from 'firebase/firestore'
+import { collection, query, where, orderBy, onSnapshot, updateDoc, doc, deleteDoc, writeBatch } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { useUser } from '../../hooks/useUser'
 import { useNavigate } from 'react-router-dom'
@@ -55,6 +55,18 @@ const NotificationPanel = () => {
     await deleteDoc(doc(db, 'notifications', notificationId))
   }
 
+  const handleMarkAllAsRead = async () => {
+    const batch = writeBatch(db)
+    const unreadNotifications = notifications.filter(n => !n.read)
+
+    unreadNotifications.forEach((notification) => {
+      const notifRef = doc(db, 'notifications', notification.id)
+      batch.update(notifRef, { read: true })
+    })
+
+    await batch.commit()
+  }
+
   const getNotificationIcon = (type) => {
     const iconMap = {
       'club_join_request': '👥',
@@ -103,14 +115,24 @@ const NotificationPanel = () => {
 
       {isOpen && (
         <>
-          <div 
-            className="fixed inset-0 z-40" 
+          <div
+            className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-xl border border-stone-200 z-50 max-h-[32rem] overflow-hidden flex flex-col">
             <div className="p-4 border-b border-stone-200 flex items-center justify-between bg-stone-50">
-              <h3 className="text-lg font-bold text-ink font-serif">Notifications</h3>
-              <span className="text-sm text-ink/60">{notifications.length} total</span>
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-bold text-ink font-serif">Notifications</h3>
+                <span className="text-sm text-ink/60">{notifications.length} total</span>
+              </div>
+              {unreadCount > 0 && (
+                <button
+                  onClick={handleMarkAllAsRead}
+                  className="text-xs font-medium text-primary-600 hover:text-primary-700 hover:underline transition"
+                >
+                  Mark all read
+                </button>
+              )}
             </div>
 
             <div className="overflow-y-auto flex-1">
@@ -124,9 +146,8 @@ const NotificationPanel = () => {
                   <div
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`p-4 border-b border-stone-100 cursor-pointer transition-colors hover:bg-stone-50 ${
-                      !notification.read ? 'bg-primary-50/30' : ''
-                    }`}
+                    className={`p-4 border-b border-stone-100 cursor-pointer transition-colors hover:bg-stone-50 ${!notification.read ? 'bg-primary-50/30' : ''
+                      }`}
                   >
                     <div className="flex items-start gap-3">
                       <div className="text-2xl flex-shrink-0">
